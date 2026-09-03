@@ -1,5 +1,5 @@
 # Idioca Box Spec
-**Version 0.1.0 — Draft**
+**Version 0.1.1 — Draft**
 
 ## Principle
 
@@ -17,21 +17,23 @@ It is: *Which capability needs to become a permanent part of the system, and wha
 **Humans own contracts, semantics, architecture and verification boundaries.
 Agents may implement inside those boundaries.**
 
-Idioca boxes perform bounded workloads on storage supplied from outside the box, either to preserve state or to read and modify stored information. Dense coupling between many boxes defeats the purpose of Idioca boxes. Complex Idioca box systems may therefore introduce an orchestration box.
+A box is defined by its capability and contract, not by its implementation.
+
+Idioca boxes perform bounded workloads on externally managed storage or through other declared interfaces. Dense coupling between many boxes defeats the purpose of Idioca boxes. Complex Idioca box systems may therefore introduce an orchestration box.
 
 ## Rules
 
 ### 1. Independently Deployable
 
-An Idioca box can be built, deployed, operated, and replaced without requiring other system components to change.
+An Idioca box has its own build and operational lifecycle. Its implementation can be built, deployed, updated, restarted, or replaced without requiring compatible consumers to change merely because its internal implementation changed.
 
-A box has its own build and operational lifecycle. It can be installed, updated, restarted, or replaced without rebuilding other components merely because its internal implementation changed.
+Independent deployment does not mean operational independence. A box may depend on other systems where those dependencies are declared by its contract.
 
 Though containers, networking capabilities and APIs are recommended for deployment, they do not define Idioca. When good reasons speak against them, they shall not be forced.
 
 ### 2. Implementation-Opaque
 
-Each Idioca box may have its own individual, internal software stack that best fits its intended purpose. Technical implementation is not defined by a box's contract. 
+Each Idioca box may have its own individual, internal software stack that best fits its intended purpose. Technical implementation is not defined by a box's contract.
 
 Other components or users interact with a box only through its declared contract with defined interfaces. They must not depend on its internal implementation details, caches or temporary files.
 
@@ -39,31 +41,37 @@ Opacity is about dependency, not secrecy. Source code may be public and maintain
 
 [The Twelve-Factor App](https://12factor.net/)-methodology should be followed where applicable as implementation guideline. Implementation opacity does not excuse unsafe, unverifiable, or unmaintainable behavior.
 
-Implementation work is complete when the simplest safe solution satisfies the contract and its operational requirements.
+Implementation work is complete when a simple, safe and maintainable solution satisfies the contract and its operational requirements.
 
 ### 3. Contract-Aligned
 
-An Idioca box is valid only while its externally observable behaviour matches its contract.  
+An Idioca box is valid only while its externally observable behaviour matches its contract.
 
 A complete contract declares:
 * purpose and scope: why the box exists, what its workload is, what data is processed, why its capabilities are included, and what lies outside its boundary.
-* interfaces: inputs, outputs, persistent storage, state and configuration, temporary cache and working files, networking, APIs, errors and logs, operational behaviour.
+* interfaces and semantics: inputs, outputs, persistent storage, state and configuration, temporary cache and working files, networking, APIs, errors and logs, operational behaviour, including their meaning where relevant.
 * verification: the externally visible acceptance criteria and tests that demonstrate compliance.
-* dependencies: the environment a box can depend on, including networking, persistent storage, container virtualization.
+* dependencies: the environment and external systems a box can depend on.
+
+Any externally supplied parameter that changes observable semantics must be declared by the contract.
 
 Changes to a box's contract must be intentional and coordinated with affected consumers. Versions of a contract should be tracked with git. A change in contract must be followed by an update to the implementation and overall system architecture when required.
 
 Changing a box's implementation is ordinary development. Changing its contract may change the surrounding architecture.
 
-Operational knowledge must be explicit in contract definitions on how to deploy, observe, diagnose, recover, and replace the box so that another competent person can continue its operation without undocumented knowledge from the original maintainer.
+Operational knowledge must be explicit on how to deploy, observe, diagnose, recover, and replace the box so that another competent person can continue its operation without undocumented knowledge from the original maintainer.
 
 ### 4. Configuration and persistent storage
 
-An Idioca box must be disposable. Stopping, deleting, rebuilding, or replacing it must not silently destroy authoritative data. Only caches and temporary working files may exist inside the box.
+An Idioca box must be disposable. Stopping, deleting, rebuilding, or replacing it must not silently destroy authoritative data. Only caches and temporary working files may exist inside the disposable implementation.
 
-Configuration is supplied externally, including environment variables, networking, permissions and privileges as well as runtime configuration and behavioural parameters.
+Configuration is supplied externally, including environment variables, networking, permissions and privileges as well as runtime configuration and behavioural parameters. Hidden dependencies on paths, hostnames, storage structures, privileges, execution order, routing, configuration or undocumented conventions are defects.
 
-Persistent authoritative state and data belong in explicitly managed systems such as databases, filesystems with application appropriate file formats or other similar systems. Shared access to storage must be coordinated through ownership, transactions, locking, or orchestration. Authoritative storage must be backup friendly.
+Behavioural parameters that change contract-observable semantics are part of the contract.
+
+Authoritative data is data whose loss would constitute loss of system information rather than merely loss of a reproducible representation. Whether data is authoritative is an architectural decision.
+
+Persistent authoritative state and data belong in explicitly managed systems such as databases, filesystems with application appropriate file formats or other similar systems. Shared writes must have defined ownership or coordination through transactions, locking, or orchestration. Authoritative storage must be backup friendly.
 
 ### 5. Verification and operation happen at the boundary
 
@@ -79,7 +87,7 @@ Implementation opacity must never become operational opacity.
 
 Idioca boxes must be defined without creating unnecessary peer-to-peer coupling. Instead boxes shall communicate through their explicit contracted interfaces. Idioca boxes may observe externally stored data and execute workloads when stored state variables require it.
 
-A system should remain understandable as a number of clear workflows and dependencies. When coordination between boxes becomes complex, it must move behind an explicit orchestration boundary that may be another Idioca box.
+A system should remain understandable as a number of clear workflows and dependencies. When one box must understand the sequencing, lifecycle or state of several peers, that coordination should move behind an explicit orchestration boundary that may be another Idioca box.
 
 Idioca boxes might be mixed and matched between different systems. The maintainers of the system have to ensure that Idioca boxes of the system rely on a sensible common environment that supports maintainers in deployment, observation, diagnosis, recovery and replacement.
 
