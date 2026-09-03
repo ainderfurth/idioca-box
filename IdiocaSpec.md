@@ -45,9 +45,9 @@ Implementation work is complete when a simple, safe and maintainable solution sa
 
 ### 3. Contract-Aligned
 
-An Idioca box is valid only while its externally observable behaviour matches its contract.
+An Idioca box is valid only while its externally observable behaviour matches its contract. A contract should be sufficiently explicit to serve as the primary implementation brief for a competent human or agent.
 
-A complete contract declares:
+A contract should declare:
 * purpose and scope: why the box exists, what its workload is, what data is processed, why its capabilities are included, and what lies outside its boundary.
 * interfaces and semantics: inputs, outputs, persistent storage, state and configuration, temporary cache and working files, networking, APIs, errors and logs, operational behaviour, including their meaning where relevant.
 * verification: the externally visible acceptance criteria and tests that demonstrate compliance.
