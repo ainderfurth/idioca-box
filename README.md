@@ -6,7 +6,7 @@ Purpose is to establish a clear boundary between those parts of a system that mu
 
 Idioca Box concept, motivation, and rules are defined in [IdiocaSpec.md](IdiocaSpec.md).
 
-**Current specification:** Version 0.1.0 — Draft
+**Current specification:** Version 0.1.1 — Draft
 
 **The Idioca Box specification and documentation are licensed under
 Creative Commons Attribution 4.0 International (CC BY 4.0).**
