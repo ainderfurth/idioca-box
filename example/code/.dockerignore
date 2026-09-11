@@ -1,0 +1,8 @@
+*
+!index.html
+!license.html
+!readme.html
+!style.css
+!server.py
+!vendor/
+!vendor/**

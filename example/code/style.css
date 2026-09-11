@@ -1,0 +1,35 @@
+@layer base, utils, components;
+@import "vendor/base.css";
+@import "vendor/utils/box.css";
+@import "vendor/components/typography.css";
+
+:root[data-webtui-theme="dark"] {
+  --background0: #111917;
+  --background1: #1c2924;
+  --foreground0: #e2ebdf;
+  --foreground1: #b0c3b5;
+  --foreground2: #88a290;
+  --box-border-color: #769a80;
+  --font-family: "Courier New", monospace;
+  --line-height: 1.65;
+}
+body { max-width: 1100px; margin: auto; padding: 2rem 1.25rem; word-break: normal; }
+nav { display: flex; flex-wrap: wrap; gap: .75rem 2rem; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; }
+nav a { color: var(--foreground1); }
+nav a[aria-current="page"] { color: #c4f5a4; text-decoration-thickness: 3px; }
+main { padding: clamp(1rem, 4vw, 3rem); min-width: 0; }
+article { overflow-wrap: anywhere; }
+h1 { font-size: clamp(1.5rem, 4vw, 2.5rem); line-height: 1.25; margin-bottom: 1.5rem; color: #c4f5a4; }
+h2 { font-size: 1.4rem; margin-top: 2.5rem; margin-bottom: 1rem; color: #c4f5a4; }
+h3 { font-size: 1.1rem; margin: 2rem 0 1rem; color: #c4f5a4; }
+p, ul, ol, pre, table { margin-bottom: 1.2rem; }
+ul, ol { padding-left: 1.5rem; }
+li { margin-bottom: .65rem; }
+a { color: #b9e6db; overflow-wrap: anywhere; }
+a:focus-visible { outline: 2px solid #c4f5a4; outline-offset: 4px; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--background1); padding: 1rem; font: inherit; }
+code { font: inherit; color: #cfdfb9; }
+.license { background: transparent; padding: 0; }
+table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+th, td { border: 1px solid var(--box-border-color); padding: .5rem; text-align: left; }
+@media (max-width: 500px) { body { padding: .75rem; } nav { padding: 1rem; } }
