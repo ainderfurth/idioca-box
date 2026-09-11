@@ -1,5 +1,5 @@
 # Idioca Box Spec
-**Version 0.1.1 — Draft**
+**Version 0.1.2 — Draft**
 
 ## Principle
 
@@ -90,5 +90,27 @@ Idioca boxes must be defined without creating unnecessary peer-to-peer coupling.
 A system should remain understandable as a number of clear workflows and dependencies. When one box must understand the sequencing, lifecycle or state of several peers, that coordination should move behind an explicit orchestration boundary that may be another Idioca box.
 
 Idioca boxes might be mixed and matched between different systems. The maintainers of the system have to ensure that Idioca boxes of the system rely on a sensible common environment that supports maintainers in deployment, observation, diagnosis, recovery and replacement.
+
+### 7. Predictable structure and accessible usage
+
+Each Idioca box must implement a predictable root folder structure so that humans can find its contract, configuration and usage instructions. The following layout is the standard, with optional content in brackets. Deviations are permitted for good reasons.
+
+```text
+box-root/
+├── code/
+    ├── [Dockerfile]
+│   └── implementation.*
+├── [data/]
+│   └── [temporary-files.*]
+├── [.env]
+├── .env.example
+├── [compose.yml]
+├── contract.md
+└── README.md
+```
+
+`README.md` provides a low-friction introduction for human users and links to `contract.md`. It must include a short but precise guide to configuring and using the box. Any commands or other actions needed to start the box and trigger its workload must be stated explicitly, including the working directory, required arguments and expected result. If the box exposes an API for other boxes or consumers, the README must include a concrete usage example showing a request or invocation and its expected response or effect. Instructions for verification and operation may be included directly or linked from the README.
+
+The [example root folder](example/) provides a starting point. If needed, its local `.env` is created from `.env.example` after checkout.
 
 ***End***
